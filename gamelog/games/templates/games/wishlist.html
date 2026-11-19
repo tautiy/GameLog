@@ -1,0 +1,28 @@
+{% extends 'games/base.html' %}
+
+{% block title %}Список желаемого — GameLog{% endblock %}
+
+{% block content %}
+    <h1>Список желаемого</h1>
+
+    {% if wishlist %}
+        <div class="library-grid">
+            {% for item in wishlist %}
+                <div class="library-card">
+                    <h3>{{ item.title }}</h3>
+                    <p>Добавлено: {{ item.added_at|date:"d.m.Y" }}</p>
+
+                    <form action="{% url 'toggle_wishlist' item.rawg_id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-remove">Удалить из желаемого</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="wishlist-empty">
+            <p>Ваш список желаемого пуст. Добавьте игры через поиск или страницу игры.</p>
+            <a href="{% url 'game_search' %}">Перейти к поиску →</a>
+        </div>
+    {% endif %}
+{% endblock %}

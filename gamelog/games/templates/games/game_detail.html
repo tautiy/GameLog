@@ -1,0 +1,47 @@
+{% extends 'games/base.html' %}
+
+{% block title %}{{ game.title }} — GameLog{% endblock %}
+
+{% block content %}
+    <h1>{{ game.title }}</h1>
+
+    <h2>Информация об игре</h2>
+
+    <p><strong>Жанры:</strong>
+        {% for genre in game.genre.all %}
+            {{ genre.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Не указаны
+        {% endfor %}
+    </p>
+
+    <p><strong>Разработчики:</strong>
+        {% for developer in game.developer.all %}
+            {{ developer.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Не указаны
+        {% endfor %}
+    </p>
+
+    <p><strong>Платформы:</strong>
+        {% for platform in game.platform.all %}
+            {{ platform.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Не указаны
+        {% endfor %}
+    </p>
+
+    <p><strong>Издатели:</strong>
+        {% for item in game.game_publishers.all %}
+            {{ item.publisher.name }} ({{ item.region }}){% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Не указаны
+        {% endfor %}
+    </p>
+
+    <p><strong>Дата выхода:</strong>
+        {{ game.released_at|default:"Не указана" }}
+    </p>
+
+    <p><a href="{% url 'game_list' %}">← Вернуться в каталог</a></p>
+{% endblock %}

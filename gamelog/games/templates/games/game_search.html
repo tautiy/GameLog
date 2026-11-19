@@ -1,0 +1,63 @@
+{% extends 'games/base.html' %}
+
+{% block title %}Поиск игр — GameLog{% endblock %}
+
+{% block content %}
+    <h1>Поиск игр</h1>
+
+    <form action="{% url 'game_search' %}" method="get">
+        <input
+            type="text"
+            name="q"
+            value="{{ query }}"
+            placeholder="Введите название игры"
+        >
+        <button type="submit">Найти</button>
+    </form>
+
+    {% if api_error %}
+        <div class="alert alert-error">
+            Сервис игр временно недоступен. Попробуйте позже.
+        </div>
+    {% endif %}
+
+    {% if query %}
+        <h2>Результаты поиска: {{ query }}</h2>
+
+        {% for game in results %}
+            <div class="game-card">
+                <h3>{{ game.name }}</h3>
+
+                {% if game.background_image %}
+                    <img src="{{ game.background_image }}" alt="{{ game.name }}" width="200">
+                {% endif %}
+
+                <p>Дата выхода: {{ game.released|default:"Неизвестна" }}</p>
+                <p>Рейтинг RAWG: {{ game.rating|default:"Нет рейтинга" }}</p>
+
+                {% if user.is_authenticated %}
+                    <form action="{% url 'toggle_user_game_status' game.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <select name="status" class="status-select">
+                            <option value="planned">Запланировано</option>
+                            <option value="playing">Играю</option>
+                            <option value="completed">Пройдено</option>
+                            <option value="dropped">Заброшено</option>
+                        </select>
+                        <button type="submit" class="btn-add">В библиотеку</button>
+                    </form>
+                    <form action="{% url 'toggle_wishlist' game.id %}" method="post" style="display:inline; margin-left:0.5rem;">
+                        {% csrf_token %}
+                        <button type="submit">♡ В желаемое</button>
+                    </form>
+                {% endif %}
+
+                <a href="{% url 'rawg_game_detail' game.id %}">Подробнее</a>
+            </div>
+        {% empty %}
+            <p>Ничего не найдено.</p>
+        {% endfor %}
+    {% endif %}
+
+    <p><a href="{% url 'game_list' %}">← Вернуться в каталог</a></p>
+{% endblock %}

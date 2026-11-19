@@ -1,0 +1,20 @@
+{% extends 'games/base.html' %}
+
+{% block title %}Каталог игр — GameLog{% endblock %}
+
+{% block content %}
+    <h1>GameLog</h1>
+    <h2>Каталог игр</h2>
+
+    {% for game in games %}
+        <p>
+            <a href="{% url 'game_detail' game.pk %}">
+                {{ game.title }}
+            </a>
+        </p>
+    {% empty %}
+        <p>Пока игр нет.</p>
+    {% endfor %}
+
+    <p><a href="{% url 'game_search' %}">Искать игры на RAWG →</a></p>
+{% endblock %}

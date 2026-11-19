@@ -1,0 +1,36 @@
+{% extends 'games/base.html' %}
+
+{% block title %}{{ game.name }} — GameLog{% endblock %}
+
+{% block content %}
+    <h1>{{ game.name }}</h1>
+
+    {% if game.background_image %}
+        <img src="{{ game.background_image }}" alt="{{ game.name }}" width="400">
+    {% endif %}
+
+    <p><strong>Дата выхода:</strong> {{ game.released|default:"Неизвестна" }}</p>
+    <p><strong>Рейтинг RAWG:</strong> {{ game.rating|default:"Нет рейтинга" }}</p>
+
+    <h2>Описание</h2>
+    {{ game.description|striptags }}
+
+    {% if user.is_authenticated %}
+        <form action="{% url 'toggle_user_game_status' game.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <select name="status" class="status-select">
+                <option value="planned">Запланировано</option>
+                <option value="playing">Играю</option>
+                <option value="completed">Пройдено</option>
+                <option value="dropped">Заброшено</option>
+            </select>
+            <button type="submit" class="btn-add">В библиотеку</button>
+        </form>
+        <form action="{% url 'toggle_wishlist' game.id %}" method="post" style="display:inline; margin-left:0.5rem;">
+            {% csrf_token %}
+            <button type="submit">♡ В желаемое</button>
+        </form>
+    {% endif %}
+
+    <p><a href="{% url 'game_search' %}?q={{ game.name|urlencode }}">← Назад к поиску</a></p>
+{% endblock %}
