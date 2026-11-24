@@ -48,6 +48,14 @@ class Platform(models.Model):
 
 class Game(models.Model):
     title = models.CharField(max_length=128, verbose_name='Название')
+    background_image = models.URLField(
+        blank=True,
+        verbose_name='Ссылка на обложку',
+    )
+    description = models.TextField(
+        blank=True,
+        verbose_name='Описание',
+    )
     genre = models.ManyToManyField(Genre, verbose_name='Жанры')
     developer = models.ManyToManyField(Developer, verbose_name='Разработчик')
     platform = models.ManyToManyField(Platform, verbose_name='Платформы')

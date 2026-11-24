@@ -5,7 +5,16 @@
 {% block content %}
     <h1>{{ game.title }}</h1>
 
+    {% if game.background_image %}
+        <img src="{{ game.background_image }}" alt="{{ game.title }}" width="300">
+    {% endif %}
+
     <h2>Информация об игре</h2>
+
+    {% if game.description %}
+        <h3>Описание</h3>
+        <p>{{ game.description|striptags }}</p>
+    {% endif %}
 
     <p><strong>Жанры:</strong>
         {% for genre in game.genre.all %}
