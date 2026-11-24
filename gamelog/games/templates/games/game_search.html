@@ -3,86 +3,84 @@
 {% block title %}Поиск игр — GameLog{% endblock %}
 
 {% block content %}
-    <h1>Поиск игр</h1>
+    <div class="page-header">
+        <h1>Поиск игр</h1>
+    </div>
 
-    <form action="{% url 'game_search' %}" method="get">
-        <input
-            type="text"
-            name="q"
-            value="{{ query }}"
-            placeholder="Введите название игры"
-        >
-
-        <label for="genre">Жанр:</label>
-        <select name="genre" id="genre">
-            <option value="">Все жанры</option>
-            {% for g in genres %}
-                <option value="{{ g.id }}" {% if genre|stringformat:"s" == g.id|stringformat:"s" %}selected{% endif %}>{{ g.name }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="platform">Платформа:</label>
-        <select name="platform" id="platform">
-            <option value="">Все платформы</option>
-            {% for p in platforms %}
-                <option value="{{ p.id }}" {% if platform|stringformat:"s" == p.id|stringformat:"s" %}selected{% endif %}>{{ p.name }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="year">Год выхода:</label>
-        <select name="year" id="year">
-            <option value="">Любой год</option>
-            {% for y in years %}
-                <option value="{{ y }}" {% if year == y|stringformat:"s" %}selected{% endif %}>{{ y }}</option>
-            {% endfor %}
-        </select>
-
-        <button type="submit">Найти</button>
+    <form action="{% url 'game_search' %}" method="get" class="search-form">
+        <input type="text" name="q" value="{{ query }}" placeholder="Поиск игр...">
+        <button type="submit">🔍</button>
     </form>
 
     {% if api_error %}
-        <div class="alert alert-error">
-            Сервис игр временно недоступен. Попробуйте позже.
+        <div class="alert alert-error">Сервис игр временно недоступен. Попробуйте позже.</div>
+    {% endif %}
+
+    <div class="filters-bar">
+        <div class="filter-chips">
+            <button class="filter-chip {% if not genre and not platform and not year %}active{% endif %}">All</button>
+            <button class="filter-chip">Favorites</button>
+            <button class="filter-chip">Must Play</button>
+            <button class="filter-chip">Play Later</button>
+            <button class="filter-chip">Indie</button>
+        </div>
+        <div class="sort-select">
+            <label>Sort by:</label>
+            <select>
+                <option>Alphabetical A-Z</option>
+                <option>Release date</option>
+                <option>Rating</option>
+            </select>
+        </div>
+        <div class="view-toggle">
+            <button class="view-btn active">⌐</button>
+            <button class="view-btn">☰</button>
+        </div>
+    </div>
+
+    {% if query %}
+        <h2 class="results-title">Результаты поиска: {{ query }}</h2>
+
+        <div class="game-grid">
+            {% for game in results %}
+                <div class="game-card">
+                    <div class="game-card-image">
+                        {% if game.background_image %}
+                            <img src="{{ game.background_image }}" alt="{{ game.name }}">
+                        {% else %}
+                            <div class="placeholder-img">🎮</div>
+                        {% endif %}
+                    </div>
+                    <div class="game-card-info">
+                        <h3>{{ game.name }}</h3>
+                        <p class="game-date">Дата выхода: {{ game.released|default:"Неизвестна" }}</p>
+                        <p class="game-rating">RAWG: {{ game.rating|default:"Нет рейтинга" }}</p>
+                        <div class="game-card-actions">
+                            {% if user.is_authenticated %}
+                                <form action="{% url 'toggle_user_game_status' game.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <select name="status" class="status-select">
+                                        <option value="planned">Запланировано</option>
+                                        <option value="playing">Играю</option>
+                                        <option value="completed">Пройдено</option>
+                                        <option value="dropped">Заброшено</option>
+                                    </select>
+                                    <button type="submit" class="btn-add">В библиотеку</button>
+                                </form>
+                                <form action="{% url 'toggle_wishlist' game.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-wish">♡</button>
+                                </form>
+                            {% endif %}
+                            <a href="{% url 'rawg_game_detail' game.id %}" class="btn-detail">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="empty-results">Ничего не найдено.</p>
+            {% endfor %}
         </div>
     {% endif %}
 
-    {% if query %}
-        <h2>Результаты поиска: {{ query }}</h2>
-
-        {% for game in results %}
-            <div class="game-card">
-                <h3>{{ game.name }}</h3>
-
-                {% if game.background_image %}
-                    <img src="{{ game.background_image }}" alt="{{ game.name }}" width="200">
-                {% endif %}
-
-                <p>Дата выхода: {{ game.released|default:"Неизвестна" }}</p>
-                <p>Рейтинг RAWG: {{ game.rating|default:"Нет рейтинга" }}</p>
-
-                {% if user.is_authenticated %}
-                    <form action="{% url 'toggle_user_game_status' game.id %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <select name="status" class="status-select">
-                            <option value="planned">Запланировано</option>
-                            <option value="playing">Играю</option>
-                            <option value="completed">Пройдено</option>
-                            <option value="dropped">Заброшено</option>
-                        </select>
-                        <button type="submit" class="btn-add">В библиотеку</button>
-                    </form>
-                    <form action="{% url 'toggle_wishlist' game.id %}" method="post" style="display:inline; margin-left:0.5rem;">
-                        {% csrf_token %}
-                        <button type="submit">♡ В желаемое</button>
-                    </form>
-                {% endif %}
-
-                <a href="{% url 'rawg_game_detail' game.id %}">Подробнее</a>
-            </div>
-        {% empty %}
-            <p>Ничего не найдено.</p>
-        {% endfor %}
-    {% endif %}
-
-    <p><a href="{% url 'game_list' %}">← Вернуться в каталог</a></p>
+    <p><a href="{% url 'game_list' %}" class="back-link">← Вернуться в каталог</a></p>
 {% endblock %}

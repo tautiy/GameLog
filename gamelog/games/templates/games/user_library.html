@@ -3,40 +3,46 @@
 {% block title %}Моя библиотека — GameLog{% endblock %}
 
 {% block content %}
-    <h1>Моя библиотека</h1>
+    <div class="page-header">
+        <h1>Моя библиотека</h1>
+    </div>
 
     {% if user_games %}
-        <div class="library-grid">
+        <div class="game-grid">
             {% for user_game in user_games %}
-                <div class="library-card">
-                    <h3>{{ user_game.title }}</h3>
-                    <span class="status-badge status-{{ user_game.status }}">
-                        {{ user_game.get_status_display }}
-                    </span>
-                    <p>Добавлено: {{ user_game.added_at|date:"d.m.Y" }}</p>
+                <div class="game-card">
+                    <div class="game-card-image">
+                        <div class="placeholder-img">🎮</div>
+                    </div>
+                    <div class="game-card-info">
+                        <h3>{{ user_game.title }}</h3>
+                        <span class="status-badge status-{{ user_game.status }}">{{ user_game.get_status_display }}</span>
+                        <p class="game-date">Добавлено: {{ user_game.added_at|date:"d.m.Y" }}</p>
 
-                    <form action="{% url 'toggle_user_game_status' user_game.rawg_id %}" method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <select name="status" class="status-select">
-                            <option value="planned" {% if user_game.status == 'planned' %}selected{% endif %}>Запланировано</option>
-                            <option value="playing" {% if user_game.status == 'playing' %}selected{% endif %}>Играю</option>
-                            <option value="completed" {% if user_game.status == 'completed' %}selected{% endif %}>Пройдено</option>
-                            <option value="dropped" {% if user_game.status == 'dropped' %}selected{% endif %}>Заброшено</option>
-                        </select>
-                        <button type="submit">Обновить</button>
-                    </form>
-
-                    <form action="{% url 'remove_user_game' user_game.rawg_id %}" method="post" style="display:inline; margin-left:0.5rem;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-remove">Удалить</button>
-                    </form>
+                        <div class="game-card-actions">
+                            <form action="{% url 'toggle_user_game_status' user_game.rawg_id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <select name="status" class="status-select">
+                                    <option value="planned" {% if user_game.status == 'planned' %}selected{% endif %}>Запланировано</option>
+                                    <option value="playing" {% if user_game.status == 'playing' %}selected{% endif %}>Играю</option>
+                                    <option value="completed" {% if user_game.status == 'completed' %}selected{% endif %}>Пройдено</option>
+                                    <option value="dropped" {% if user_game.status == 'dropped' %}selected{% endif %}>Заброшено</option>
+                                </select>
+                                <button type="submit" class="btn-add">Обновить</button>
+                            </form>
+                            <form action="{% url 'remove_user_game' user_game.rawg_id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-remove">Удалить</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <div class="wishlist-empty">
+        <div class="empty-state">
             <p>Ваша библиотека пуста. Найдите игру через поиск и добавьте её сюда.</p>
-            <a href="{% url 'game_search' %}">Перейти к поиску →</a>
+            <a href="{% url 'game_search' %}" class="btn-detail">Перейти к поиску →</a>
         </div>
     {% endif %}
 {% endblock %}
