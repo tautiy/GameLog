@@ -7,6 +7,9 @@ from .models import (
     Platform,
     Game,
     GamePublisher,
+    UserGame,
+    Wishlist,
+    UserGameRating,
 )
 
 
@@ -25,3 +28,6 @@ admin.site.register(Developer)
 admin.site.register(Publisher)
 admin.site.register(Platform)
 admin.site.register(GamePublisher)
+admin.site.register(UserGame)
+admin.site.register(Wishlist)
+admin.site.register(UserGameRating)

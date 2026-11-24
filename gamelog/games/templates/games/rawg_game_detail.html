@@ -16,6 +16,16 @@
     {{ game.description|striptags }}
 
     {% if user.is_authenticated %}
+        {% if user_rating %}
+            <h3>Ваша оценка: {{ user_rating.rating }}/5</h3>
+            {% if user_rating.review %}
+                <p><strong>Ваша рецензия:</strong> {{ user_rating.review }}</p>
+            {% endif %}
+            <p><a href="{% url 'rate_game' game.id %}">Редактировать оценку</a></p>
+        {% else %}
+            <p><a href="{% url 'rate_game' game.id %}">Оценить игру</a></p>
+        {% endif %}
+
         <form action="{% url 'toggle_user_game_status' game.id %}" method="post" style="display:inline;">
             {% csrf_token %}
             <select name="status" class="status-select">

@@ -1,0 +1,49 @@
+{% extends 'games/base.html' %}
+
+{% block title %}Рекомендации — GameLog{% endblock %}
+
+{% block content %}
+    <h1>Рекомендации для вас</h1>
+
+    {% if top_genres %}
+        <p>Подобрано по вашим любимым жанрам: {{ top_genres|join:", " }}</p>
+    {% else %}
+        <p>Добавьте игры в библиотеку со статусом "Играю" или "Пройдено", и мы подберем рекомендации по вашим любимым жанрам.</p>
+    {% endif %}
+
+    {% if recommended %}
+        <div class="library-grid">
+            {% for game in recommended %}
+                <div class="library-card">
+                    <h3>{{ game.name }}</h3>
+
+                    {% if game.background_image %}
+                        <img src="{{ game.background_image }}" alt="{{ game.name }}" width="200">
+                    {% endif %}
+
+                    <p>Дата выхода: {{ game.released|default:"Неизвестна" }}</p>
+                    <p>Рейтинг RAWG: {{ game.rating|default:"Нет рейтинга" }}</p>
+
+                    <a href="{% url 'rawg_game_detail' game.id %}">Подробнее</a>
+
+                    {% if user.is_authenticated %}
+                        <form action="{% url 'toggle_user_game_status' game.id %}" method="post" style="display:inline; margin-top:0.5rem;">
+                            {% csrf_token %}
+                            <select name="status" class="status-select">
+                                <option value="planned">Запланировано</option>
+                                <option value="playing">Играю</option>
+                                <option value="completed">Пройдено</option>
+                                <option value="dropped">Заброшено</option>
+                            </select>
+                            <button type="submit" class="btn-add">В библиотеку</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% elif top_genres %}
+        <p>Пока не удалось подобрать рекомендации по вашим жанрам. Попробуйте позже.</p>
+    {% endif %}
+
+    <p><a href="{% url 'game_search' %}">← Перейти к поиску</a></p>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'games/base.html' %}
+
+{% block title %}Оценка игры — GameLog{% endblock %}
+
+{% block content %}
+    <h1>Оценка игры: {{ game.name }}</h1>
+
+    {% if game.background_image %}
+        <img src="{{ game.background_image }}" alt="{{ game.name }}" width="300">
+    {% endif %}
+
+    <p><strong>Дата выхода:</strong> {{ game.released|default:"Неизвестна" }}</p>
+    <p><strong>Рейтинг RAWG:</strong> {{ game.rating|default:"Нет рейтинга" }}</p>
+
+    <h2>Ваша оценка</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-save">
+            {% if existing_rating %}Обновить{% else %}Сохранить{% endif %}
+        </button>
+    </form>
+
+    {% if existing_rating %}
+        <form action="{% url 'delete_rating' game.id %}" method="post" style="display:inline; margin-top:1rem;">
+            {% csrf_token %}
+            <button type="submit" class="btn-remove">Удалить оценку</button>
+        </form>
+    {% endif %}
+
+    <p><a href="{% url 'rawg_game_detail' game.id %}">← Назад к игре</a></p>
+{% endblock %}

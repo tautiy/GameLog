@@ -268,3 +268,81 @@ a:hover {
     background-color: #27ae60;
     box-shadow: 0 0 12px rgba(46, 204, 113, 0.5);
 }
+
+/* ---- Search filters ---- */
+form select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid var(--graphite-border);
+    border-radius: 4px;
+    background-color: var(--graphite-card);
+    color: var(--graphite-text);
+    min-width: 140px;
+}
+
+form select:focus {
+    outline: none;
+    border-color: var(--electric-purple);
+    box-shadow: 0 0 8px var(--electric-purple-glow);
+}
+
+form label {
+    font-size: 0.9rem;
+    color: var(--graphite-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* ---- Rating / review form ---- */
+.rating-select {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid var(--graphite-border);
+    border-radius: 4px;
+    background-color: var(--graphite-card);
+    color: var(--graphite-text);
+    width: 100%;
+    max-width: 120px;
+}
+
+.review-textarea {
+    width: 100%;
+    max-width: 600px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid var(--graphite-border);
+    border-radius: 4px;
+    background-color: var(--graphite-card);
+    color: var(--graphite-text);
+    resize: vertical;
+}
+
+.review-textarea:focus {
+    outline: none;
+    border-color: var(--electric-purple);
+    box-shadow: 0 0 8px var(--electric-purple-glow);
+}
+
+/* ---- User rating badge ---- */
+.user-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    background-color: var(--graphite-panel);
+    border: 1px solid var(--graphite-border);
+    margin-top: 0.5rem;
+}
+
+.user-rating strong {
+    color: var(--electric-purple);
+}
+
+/* ---- Empty states ---- */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--graphite-text-muted);
+}

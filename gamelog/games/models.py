@@ -138,3 +138,34 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return f'{self.user.username} — {self.title}'
+
+
+class UserGameRating(models.Model):
+    RATING_CHOICES = [(i, str(i)) for i in range(1, 6)]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+        related_name='game_ratings',
+    )
+    rawg_id = models.PositiveIntegerField(verbose_name='ID игры в RAWG')
+    title = models.CharField(max_length=256, verbose_name='Название')
+    rating = models.PositiveSmallIntegerField(
+        choices=RATING_CHOICES,
+        verbose_name='Оценка',
+    )
+    review = models.TextField(
+        blank=True,
+        verbose_name='Рецензия',
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Обновлено')
+
+    class Meta:
+        verbose_name = 'Оценка игры'
+        verbose_name_plural = 'Оценки игр'
+        unique_together = ('user', 'rawg_id')
+
+    def __str__(self):
+        return f'{self.user.username} — {self.title} ({self.rating})'

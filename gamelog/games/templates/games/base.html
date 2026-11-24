@@ -16,6 +16,7 @@
                 <li><a href="{% url 'game_search' %}">Поиск</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'user_library' %}">Моя библиотека</a></li>
+                    <li><a href="{% url 'recommended_games' %}">Рекомендации</a></li>
                     <li><a href="{% url 'wishlist_view' %}">Желаемое</a></li>
                     <li><a href="{% url 'logout' %}">Выйти ({{ user.username }})</a></li>
                 {% else %}

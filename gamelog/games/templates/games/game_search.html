@@ -12,6 +12,31 @@
             value="{{ query }}"
             placeholder="Введите название игры"
         >
+
+        <label for="genre">Жанр:</label>
+        <select name="genre" id="genre">
+            <option value="">Все жанры</option>
+            {% for g in genres %}
+                <option value="{{ g.id }}" {% if genre|stringformat:"s" == g.id|stringformat:"s" %}selected{% endif %}>{{ g.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="platform">Платформа:</label>
+        <select name="platform" id="platform">
+            <option value="">Все платформы</option>
+            {% for p in platforms %}
+                <option value="{{ p.id }}" {% if platform|stringformat:"s" == p.id|stringformat:"s" %}selected{% endif %}>{{ p.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="year">Год выхода:</label>
+        <select name="year" id="year">
+            <option value="">Любой год</option>
+            {% for y in years %}
+                <option value="{{ y }}" {% if year == y|stringformat:"s" %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+
         <button type="submit">Найти</button>
     </form>
 
