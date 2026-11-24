@@ -649,3 +649,107 @@ body {
         padding: 1.5rem;
     }
 }
+
+/* ---- SVG Icons ---- */
+.icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.icon-sm {
+    width: 16px;
+    height: 16px;
+}
+
+.icon-lg {
+    width: 28px;
+    height: 28px;
+}
+
+.icon-purple {
+    color: var(--electric-purple);
+}
+
+.icon-green {
+    color: var(--success-green);
+}
+
+.icon-red {
+    color: var(--danger-red);
+}
+
+.icon-muted {
+    color: var(--graphite-text-muted);
+}
+
+.sidebar-brand .icon {
+    width: 24px;
+    height: 24px;
+    color: var(--electric-purple);
+}
+
+.nav-item .icon {
+    width: 18px;
+    height: 18px;
+    color: var(--graphite-text-muted);
+}
+
+.nav-item.active .icon {
+    color: #fff;
+}
+
+.nav-item:hover .icon {
+    color: var(--electric-purple);
+}
+
+.header-btn .icon,
+.header-profile .icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 0.4rem;
+}
+
+.header-search button .icon {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-wish .icon,
+.btn-remove .icon {
+    width: 16px;
+    height: 16px;
+}
+
+.page-header .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.75rem;
+    color: var(--electric-purple);
+}
+
+.status-badge .icon {
+    width: 12px;
+    height: 12px;
+    margin-right: 0.3rem;
+    vertical-align: middle;
+}
+
+/* Replace placeholder emoji with icon */
+.placeholder-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder-img .icon {
+    width: 64px;
+    height: 64px;
+    color: var(--graphite-text-muted);
+}

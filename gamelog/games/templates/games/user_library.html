@@ -1,9 +1,11 @@
 {% extends 'games/base.html' %}
+{% load static %}
 
 {% block title %}Моя библиотека — GameLog{% endblock %}
 
 {% block content %}
     <div class="page-header">
+        <img src="{% static 'icons/gamepad.svg' %}" alt="Мои игры" class="icon page-header-icon">
         <h1>Моя библиотека</h1>
     </div>
 
@@ -12,11 +14,11 @@
             {% for user_game in user_games %}
                 <div class="game-card">
                     <div class="game-card-image">
-                        <div class="placeholder-img">🎮</div>
+                        <div class="placeholder-img"><img src="{% static 'icons/gamepad.svg' %}" alt="" class="icon"></div>
                     </div>
                     <div class="game-card-info">
                         <h3>{{ user_game.title }}</h3>
-                        <span class="status-badge status-{{ user_game.status }}">{{ user_game.get_status_display }}</span>
+                        <span class="status-badge status-{{ user_game.status }}">{% if user_game.status == 'completed' %}<img src="{% static 'icons/check.svg' %}" alt="" class="icon">{% endif %}{{ user_game.get_status_display }}</span>
                         <p class="game-date">Добавлено: {{ user_game.added_at|date:"d.m.Y" }}</p>
 
                         <div class="game-card-actions">
@@ -32,7 +34,7 @@
                             </form>
                             <form action="{% url 'remove_user_game' user_game.rawg_id %}" method="post" style="display:inline;">
                                 {% csrf_token %}
-                                <button type="submit" class="btn-remove">Удалить</button>
+                                <button type="submit" class="btn-remove"><img src="{% static 'icons/trash.svg' %}" alt="Удалить" class="icon"> Удалить</button>
                             </form>
                         </div>
                     </div>

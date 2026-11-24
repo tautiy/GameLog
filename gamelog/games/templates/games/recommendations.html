@@ -1,9 +1,11 @@
 {% extends 'games/base.html' %}
+{% load static %}
 
 {% block title %}Рекомендации — GameLog{% endblock %}
 
 {% block content %}
     <div class="page-header">
+        <img src="{% static 'icons/star.svg' %}" alt="Рекомендации" class="icon page-header-icon">
         <h1>Рекомендации для вас</h1>
     </div>
 
@@ -23,13 +25,13 @@
                         {% if game.background_image %}
                             <img src="{{ game.background_image }}" alt="{{ game.name }}">
                         {% else %}
-                            <div class="placeholder-img">🎮</div>
+                            <div class="placeholder-img"><img src="{% static 'icons/gamepad.svg' %}" alt="" class="icon"></div>
                         {% endif %}
                     </div>
                     <div class="game-card-info">
                         <h3>{{ game.name }}</h3>
                         <p class="game-date">Дата выхода: {{ game.released|default:"Неизвестна" }}</p>
-                        <p class="game-rating">RAWG: {{ game.rating|default:"Нет рейтинга" }}</p>
+                        <p class="game-rating"><img src="{% static 'icons/star.svg' %}" alt="" class="icon icon-sm"> RAWG: {{ game.rating|default:"Нет рейтинга" }}</p>
                         <div class="game-card-actions">
                             <a href="{% url 'rawg_game_detail' game.id %}" class="btn-detail">Подробнее</a>
                             {% if user.is_authenticated %}

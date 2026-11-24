@@ -1,9 +1,10 @@
 {% extends 'games/base.html' %}
+{% load static %}
 
 {% block title %}Вход — GameLog{% endblock %}
 
 {% block content %}
-    <h1>Вход</h1>
+    <h1><img src="{% static 'icons/user.svg' %}" alt="Вход" class="icon page-header-icon"> Вход</h1>
 
     <form method="post">
         {% csrf_token %}

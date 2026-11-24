@@ -1,4 +1,5 @@
 {% extends 'games/base.html' %}
+{% load static %}
 
 {% block title %}{{ game.name }} — GameLog{% endblock %}
 
@@ -10,20 +11,20 @@
     {% endif %}
 
     <p><strong>Дата выхода:</strong> {{ game.released|default:"Неизвестна" }}</p>
-    <p><strong>Рейтинг RAWG:</strong> {{ game.rating|default:"Нет рейтинга" }}</p>
+    <p><strong>Рейтинг RAWG:</strong> <img src="{% static 'icons/star.svg' %}" alt="" class="icon icon-sm"> {{ game.rating|default:"Нет рейтинга" }}</p>
 
     <h2>Описание</h2>
     {{ game.description|striptags }}
 
     {% if user.is_authenticated %}
         {% if user_rating %}
-            <h3>Ваша оценка: {{ user_rating.rating }}/5</h3>
+            <h3><img src="{% static 'icons/star.svg' %}" alt="" class="icon"> Ваша оценка: {{ user_rating.rating }}/5</h3>
             {% if user_rating.review %}
                 <p><strong>Ваша рецензия:</strong> {{ user_rating.review }}</p>
             {% endif %}
             <p><a href="{% url 'rate_game' game.id %}">Редактировать оценку</a></p>
         {% else %}
-            <p><a href="{% url 'rate_game' game.id %}">Оценить игру</a></p>
+            <p><a href="{% url 'rate_game' game.id %}"><img src="{% static 'icons/star.svg' %}" alt="" class="icon"> Оценить игру</a></p>
         {% endif %}
 
         <form action="{% url 'toggle_user_game_status' game.id %}" method="post" style="display:inline;">
@@ -31,14 +32,14 @@
             <select name="status" class="status-select">
                 <option value="planned">Запланировано</option>
                 <option value="playing">Играю</option>
-                <option value="completed">Пройдено</option>
+                <option value="completed">Пройдено <img src="{% static 'icons/check.svg' %}" alt="" class="icon icon-sm"></option>
                 <option value="dropped">Заброшено</option>
             </select>
             <button type="submit" class="btn-add">В библиотеку</button>
         </form>
         <form action="{% url 'toggle_wishlist' game.id %}" method="post" style="display:inline; margin-left:0.5rem;">
             {% csrf_token %}
-            <button type="submit">♡ В желаемое</button>
+            <button type="submit" class="btn-wish"><img src="{% static 'icons/heart.svg' %}" alt="В желаемое" class="icon"> В желаемое</button>
         </form>
     {% endif %}
 

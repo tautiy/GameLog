@@ -1,15 +1,17 @@
 {% extends 'games/base.html' %}
+{% load static %}
 
 {% block title %}Поиск игр — GameLog{% endblock %}
 
 {% block content %}
     <div class="page-header">
+        <img src="{% static 'icons/search.svg' %}" alt="Поиск" class="icon page-header-icon">
         <h1>Поиск игр</h1>
     </div>
 
     <form action="{% url 'game_search' %}" method="get" class="search-form">
         <input type="text" name="q" value="{{ query }}" placeholder="Поиск игр...">
-        <button type="submit">🔍</button>
+        <button type="submit"><img src="{% static 'icons/search.svg' %}" alt="Поиск" class="icon"></button>
     </form>
 
     {% if api_error %}
@@ -48,13 +50,13 @@
                         {% if game.background_image %}
                             <img src="{{ game.background_image }}" alt="{{ game.name }}">
                         {% else %}
-                            <div class="placeholder-img">🎮</div>
+                            <div class="placeholder-img"><img src="{% static 'icons/gamepad.svg' %}" alt="" class="icon"></div>
                         {% endif %}
                     </div>
                     <div class="game-card-info">
                         <h3>{{ game.name }}</h3>
                         <p class="game-date">Дата выхода: {{ game.released|default:"Неизвестна" }}</p>
-                        <p class="game-rating">RAWG: {{ game.rating|default:"Нет рейтинга" }}</p>
+                        <p class="game-rating"><img src="{% static 'icons/star.svg' %}" alt="" class="icon icon-sm"> RAWG: {{ game.rating|default:"Нет рейтинга" }}</p>
                         <div class="game-card-actions">
                             {% if user.is_authenticated %}
                                 <form action="{% url 'toggle_user_game_status' game.id %}" method="post" style="display:inline;">
@@ -69,7 +71,7 @@
                                 </form>
                                 <form action="{% url 'toggle_wishlist' game.id %}" method="post" style="display:inline;">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn-wish">♡</button>
+                                    <button type="submit" class="btn-wish"><img src="{% static 'icons/heart.svg' %}" alt="В желаемое" class="icon"></button>
                                 </form>
                             {% endif %}
                             <a href="{% url 'rawg_game_detail' game.id %}" class="btn-detail">Подробнее</a>

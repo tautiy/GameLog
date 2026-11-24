@@ -1,9 +1,13 @@
 {% extends 'games/base.html' %}
+{% load static %}
 
 {% block title %}Список желаемого — GameLog{% endblock %}
 
 {% block content %}
-    <h1>Список желаемого</h1>
+    <div class="page-header">
+        <img src="{% static 'icons/heart.svg' %}" alt="Желаемое" class="icon page-header-icon">
+        <h1>Список желаемого</h1>
+    </div>
 
     {% if wishlist %}
         <div class="library-grid">
@@ -14,15 +18,15 @@
 
                     <form action="{% url 'toggle_wishlist' item.rawg_id %}" method="post" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="btn-remove">Удалить из желаемого</button>
+                        <button type="submit" class="btn-remove"><img src="{% static 'icons/trash.svg' %}" alt="Удалить из желаемого" class="icon"> Удалить из желаемого</button>
                     </form>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <div class="wishlist-empty">
+        <div class="empty-state">
             <p>Ваш список желаемого пуст. Добавьте игры через поиск или страницу игры.</p>
-            <a href="{% url 'game_search' %}">Перейти к поиску →</a>
+            <a href="{% url 'game_search' %}" class="btn-detail">Перейти к поиску →</a>
         </div>
     {% endif %}
 {% endblock %}

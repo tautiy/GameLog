@@ -1,16 +1,17 @@
 {% extends 'games/base.html' %}
+{% load static %}
 
 {% block title %}Оценка игры — GameLog{% endblock %}
 
 {% block content %}
-    <h1>Оценка игры: {{ game.name }}</h1>
+    <h1><img src="{% static 'icons/star.svg' %}" alt="Оценка" class="icon page-header-icon"> Оценка игры: {{ game.name }}</h1>
 
     {% if game.background_image %}
         <img src="{{ game.background_image }}" alt="{{ game.name }}" width="300">
     {% endif %}
 
     <p><strong>Дата выхода:</strong> {{ game.released|default:"Неизвестна" }}</p>
-    <p><strong>Рейтинг RAWG:</strong> {{ game.rating|default:"Нет рейтинга" }}</p>
+    <p><strong>Рейтинг RAWG:</strong> <img src="{% static 'icons/star.svg' %}" alt="" class="icon icon-sm"> {{ game.rating|default:"Нет рейтинга" }}</p>
 
     <h2>Ваша оценка</h2>
     <form method="post">
@@ -24,7 +25,7 @@
     {% if existing_rating %}
         <form action="{% url 'delete_rating' game.id %}" method="post" style="display:inline; margin-top:1rem;">
             {% csrf_token %}
-            <button type="submit" class="btn-remove">Удалить оценку</button>
+            <button type="submit" class="btn-remove"><img src="{% static 'icons/trash.svg' %}" alt="Удалить оценку" class="icon"> Удалить оценку</button>
         </form>
     {% endif %}
 
