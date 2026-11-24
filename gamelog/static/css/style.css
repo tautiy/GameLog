@@ -346,3 +346,59 @@ form label {
     padding: 3rem;
     color: var(--graphite-text-muted);
 }
+/* ---- Sticky footer & flex layout ---- */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* ---- Even form fields ---- */
+form p {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+form label {
+    font-size: 0.9rem;
+    color: var(--graphite-text-muted);
+    text-align: left;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="email"] {
+    width: 100%;
+    max-width: 420px;
+    padding: 0.55rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--graphite-border);
+    border-radius: 4px;
+    background-color: var(--graphite-card);
+    color: var(--graphite-text);
+    box-sizing: border-box;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus,
+form input[type="email"]:focus {
+    outline: none;
+    border-color: var(--electric-purple);
+    box-shadow: 0 0 8px var(--electric-purple-glow);
+}
+
+form button[type="submit"] {
+    width: 100%;
+    max-width: 420px;
+    margin-top: 0.5rem;
+}
